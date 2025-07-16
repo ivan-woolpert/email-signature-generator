@@ -337,6 +337,15 @@
             <div class="form-section">
                 <form id="signatureForm">
                     <div class="form-group">
+                        <label for="company">Company *</label>
+                        <select id="company" name="company" required>
+                            <option value="">- Select Company -</option>
+                            <option value="woolpert">Woolpert</option>
+                            <option value="bermello">Bermello Ajamil a Woolpert Company</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
                         <label for="name">Full Name *</label>
                         <input type="text" id="name" name="name" placeholder="John Shanks" required>
                     </div>
@@ -548,7 +557,7 @@
             
             // Show copy button if signature is generated
             const selectBtn = document.getElementById('selectBtn');
-            if (formData.name && formData.title && formData.directphone && formData.email && formData.office) {
+            if (formData.company && formData.name && formData.title && formData.directphone && formData.email && formData.office) {
                 selectBtn.style.display = 'block';
             } else {
                 selectBtn.style.display = 'none';
@@ -557,6 +566,7 @@
 
         function getFormData() {
             return {
+                company: document.getElementById('company').value,
                 name: document.getElementById('name').value.trim(),
                 certification: document.getElementById('certification').value.trim(),
                 title: document.getElementById('title').value.trim(),
@@ -571,8 +581,22 @@
         }
 
         function createSignatureHTML(data) {
-            if (!data.name && !data.title && !data.directphone && !data.email) {
+            if (!data.company || !data.name || !data.title || !data.directphone || !data.email) {
                 return '<p style="color: #666; text-align: center; padding: 40px;">Fill out the form to generate your signature preview</p>';
+            }
+
+            // Set company-specific information
+            let logoUrl, companyUrl, companyWebsite, companyName;
+            if (data.company === 'woolpert') {
+                logoUrl = 'https://bermelloajamil.com/wp-content/uploads/2025/07/logo-woolpert.png';
+                companyUrl = 'https://woolpert.com';
+                companyWebsite = 'woolpert.com';
+                companyName = 'Woolpert';
+            } else if (data.company === 'bermello') {
+                logoUrl = 'https://bermelloajamil.com/wp-content/uploads/2025/07/logo-ba.png';
+                companyUrl = 'https://bermelloajamil.com';
+                companyWebsite = 'bermelloajamil.com';
+                companyName = 'Bermello Ajamil a Woolpert Company';
             }
 
             let nameWithCert = data.name;
@@ -608,8 +632,8 @@
                 <table class="signature-table" cellpadding="0" cellspacing="0" border="0">
                     <tr>
                         <td class="logo-cell">
-                            <a href="https://woolpert.com">
-                                <img src="https://bermelloajamil.com/wp-content/uploads/2025/07/logo-woolpert.png" alt="Woolpert Logo">
+                            <a href="${companyUrl}">
+                                <img src="${logoUrl}" alt="${companyName} Logo">
                             </a>
                         </td>
                         <td class="info-cell">
@@ -621,7 +645,7 @@
                             
                             ${data.office ? '<div class="contact-info">' + data.office + '</div>' : ''}
                             <div class="website">
-                                <a href="https://www.woolpert.com">woolpert.com</a>
+                                <a href="${companyUrl}">${companyWebsite}</a>
                             </div>
                             ${socialLinks}
                         </td>
@@ -686,6 +710,7 @@
             document.getElementById('signaturePreview').innerHTML = 
                 '<p style="color: #666; text-align: center; padding: 40px;">Fill out the form to generate your signature preview</p>';
             document.getElementById('selectBtn').style.display = 'none';
+            document.getElementById('socialMediaInputs').style.display = 'none';
         }
 
         // Initialize with default "No" for social media
