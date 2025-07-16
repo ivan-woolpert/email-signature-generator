@@ -461,8 +461,19 @@
                         </div>
                     </div>
 
-                    <button type="button" class="btn" onclick="generateSignature()">Generate Signature</button>
-                    <button type="button" class="btn btn-secondary" onclick="clearForm()">Clear Form</button>
+                    <div id="socialMediaInputs" style="display: none;">
+                        <div class="form-group">
+                            <label for="linkedin">LinkedIn Profile URL</label>
+                            <input type="url" id="linkedin" name="linkedin" placeholder="https://www.linkedin.com/in/yourprofile">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="instagram">Instagram Profile URL</label>
+                            <input type="url" id="instagram" name="instagram" placeholder="https://www.instagram.com/yourprofile">
+                        </div>
+                    </div>
+
+
                 </form>
             </div>
 
@@ -510,6 +521,26 @@
             element.addEventListener('change', generateSignature);
         });
 
+        // Handle social media radio button changes
+        document.querySelectorAll('input[name="socialMedia"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const socialInputs = document.getElementById('socialMediaInputs');
+                if (this.value === 'yes') {
+                    socialInputs.style.display = 'block';
+                } else {
+                    socialInputs.style.display = 'none';
+                    // Clear the inputs when hiding
+                    document.getElementById('linkedin').value = '';
+                    document.getElementById('instagram').value = '';
+                }
+                generateSignature();
+            });
+        });
+
+        // Add listeners to social media inputs for auto-generation
+        document.getElementById('linkedin').addEventListener('input', generateSignature);
+        document.getElementById('instagram').addEventListener('input', generateSignature);
+
         function generateSignature() {
             const formData = getFormData();
             const signatureHTML = createSignatureHTML(formData);
@@ -533,7 +564,9 @@
                 cellphone: document.getElementById('cellphone').value.trim(),
                 email: document.getElementById('email').value.trim(),
                 office: document.getElementById('office').value,
-                socialMedia: document.querySelector('input[name="socialMedia"]:checked').value
+                socialMedia: document.querySelector('input[name="socialMedia"]:checked').value,
+                linkedin: document.getElementById('linkedin').value.trim(),
+                instagram: document.getElementById('instagram').value.trim()
             };
         }
 
@@ -554,12 +587,21 @@
 
             let socialLinks = '';
             if (data.socialMedia === 'yes') {
-                socialLinks = `
-                    <div class="social-links">
-                        <a href="https://www.facebook.com/WoolpertInc">Facebook</a>
-                        <a href="https://www.linkedin.com/company/woolpert">LinkedIn</a>
-                    </div>
-                `;
+                let links = [];
+                if (data.linkedin) {
+                    links.push(`<a href="${data.linkedin}">LinkedIn</a>`);
+                }
+                if (data.instagram) {
+                    links.push(`<a href="${data.instagram}">Instagram</a>`);
+                }
+                
+                if (links.length > 0) {
+                    socialLinks = `
+                        <div class="social-links">
+                            ${links.join(' ')}
+                        </div>
+                    `;
+                }
             }
 
             return `
