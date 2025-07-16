@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Woolpert Email Signature Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            min-height: 70vh;
+        }
+
+        .form-section {
+            padding: 40px;
+            background: #fafbfc;
+            border-right: 1px solid #e1e8ed;
+        }
+
+        .preview-section {
+            padding: 40px;
+            background: white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .radio-item input[type="radio"] {
+            width: auto;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            margin-top: 10px;
+        }
+
+
+
+        .preview-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .signature-preview {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            background: white;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            min-height: 180px;
+        }
+
+        .signature-table {
+            width: 100%;
+            border-collapse: collapse;
+            height: 100%;
+            table-layout: fixed;
+        }
+
+        .signature-table tr {
+            height: 100%;
+        }
+
+        .logo-cell {
+            background-color: #4a90e2;
+            padding: 0;
+            vertical-align: middle;
+            width: 50%;
+            border-right: 3px solid #357abd;
+            height: 100%;
+            min-height: 140px;
+            position: relative;
+        }
+
+        .logo-cell a {
+            display: block;
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .logo-cell img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .info-cell {
+            padding: 15px 20px;
+            vertical-align: top;
+            width: 50%;
+            height: 100%;
+            min-height: 140px;
+        }
+
+        .name {
+            font-family: 'Calibri', Arial, sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 2px;
+        }
+
+        .certification {
+            font-family: 'Calibri', Arial, sans-serif;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .level {
+            font-family: 'Calibri', Arial, sans-serif;
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 3px;
+        }
+
+        .title-group {
+            font-family: 'Calibri', Arial, sans-serif;
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .contact-info {
+            font-family: 'Calibri', Arial, sans-serif;
+            font-size: 10px;
+            color: #666;
+            margin-bottom: 2px;
+        }
+
+        .company-name {
+            font-family: 'Calibri', Arial, sans-serif;
+            font-size: 11px;
+            font-weight: bold;
+            color: #333;
+            margin: 8px 0 2px 0;
+        }
+
+        .website {
+            font-family: 'Calibri', Arial, sans-serif;
+            font-size: 10px;
+            margin: 5px 0;
+        }
+
+        .website a {
+            color: #4a90e2;
+            text-decoration: none;
+        }
+
+        .social-links {
+            font-family: 'Calibri', Arial, sans-serif;
+            font-size: 10px;
+            margin-top: 5px;
+        }
+
+        .social-links a {
+            color: #4a90e2;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+        .alert {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .instructions {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .instructions h3 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            color: #333;
+        }
+
+        .instructions li {
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 968px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-section {
+                border-right: none;
+                border-bottom: 1px solid #e1e8ed;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .form-section,
+            .preview-section {
+                padding: 20px;
+            }
+            
+            .logo-cell {
+                width: 50%;
+                min-height: 120px;
+            }
+            
+            .info-cell {
+                width: 50%;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Woolpert Email Signature Generator</h1>
+            <p>Create professional email signatures for Outlook</p>
+        </div>
+
+        <div class="main-content">
+            <div class="form-section">
+                <form id="signatureForm">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" placeholder="John Shanks" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="certification">Certifications</label>
+                        <input type="text" id="certification" name="certification" placeholder="LEED AP">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="level">Shareholder Level</label>
+                        <input type="text" id="level" name="level" placeholder="Associate">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="title">Job Title *</label>
+                        <input type="text" id="title" name="title" placeholder="Graphic Design Lead" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="group">Group/Practice</label>
+                        <input type="text" id="group" name="group" placeholder="Marketing">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="directphone">Direct Phone *</label>
+                        <input type="tel" id="directphone" name="directphone" placeholder="+19375311557" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cellphone">Mobile Phone</label>
+                        <input type="tel" id="cellphone" name="cellphone" placeholder="+19377284260">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" placeholder="john.shanks@woolpert.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="office">Office Location *</label>
+                        <select id="office" name="office" required>
+                            <option value="">- Select Office -</option>
+                            <option value="Office 5-303, Al Jaber Jewellery Building, Al Khalidia, Abu Dhabi, United Arab Emirates">Abu Dhabi</option>
+                            <option value="Suite 24, 91 King William Street, Adelaide, South Australia 5000">Adelaide</option>
+                            <option value="750 W 2nd Avenue, Suite 101B, Anchorage, AK, 99501, US">Anchorage</option>
+                            <option value="118 West Market Street, Athens, AL 35611">Athens</option>
+                            <option value="375 Northridge Road, Suite 300, Atlanta, GA 30350">Atlanta</option>
+                            <option value="Unit 7 Amphion Court, Lower Church Land, Tipton, West Midlands, DY4 7HN, United Kingdom">Birmingham</option>
+                            <option value="Level 1, 557 Gregory Terrace, Fortitude Valley, Qld 4006, Australia">Brisbane</option>
+                            <option value="Suite 1, Silvermine House, 9 Silverwood Close, Steenberg Office Park, Tokai, Cape Town, 7945, South Africa">Cape Town</option>
+                            <option value="4900 O'Hear Avenue, Suite 202, North Charleston, SC 29405">Charleston</option>
+                            <option value="13860 Ballantyne Corporate Place, Suite 425, Charlotte, NC 28277">Charlotte</option>
+                            <option value="676 Independence Parkway, Suite 100, Chesapeake, VA 23320">Chesapeake</option>
+                            <option value="3333 Warrenville Road, Suite 200, Lisle, Illinois 60532">Chicago</option>
+                            <option value="130 East Randolph, Suite 3100, Chicago, IL 60601">Chicago SNHA</option>
+                            <option value="1203 Walnut Street, Second Floor, Cincinnati, OH 45202">Cincinnati</option>
+                            <option value="2814 Detroit Avenue, Cleveland, OH 44113">Cleveland</option>
+                            <option value="807 Gervais Street, Suite 102, Columbia, SC 29201">Columbia</option>
+                            <option value="One Easton Oval, Suite 400, Columbus, OH 43219">Columbus</option>
+                            <option value="Gothersgade 11, 2tv, Copenhagen, 1123, Denmark">Copenhagen</option>
+                            <option value="Unit 21, Airport East Business Park, Farmers Cross, Cork, T12 T256, Ireland">Cork</option>
+                            <option value="4454 Idea Center Boulevard, Dayton, OH 45430">Dayton</option>
+                            <option value="720 South Colorado Boulevard, Suite 1200-S, Glendale, CO 80246">Denver</option>
+                            <option value="Block 2, Westpoint Court Business Park, JFK Drive Naas Road, Dublin, D12 E138, Ireland">Dublin, Ireland</option>
+                            <option value="1st Floor, River House, Howth Road, Raheny, Dublin, D05F974, Ireland">Dublin, Ireland (Omega)</option>
+                            <option value="600 Aviation Research Boulevard, Suite 4, Egg Harbor Township, NJ 08234">Egg Harbor</option>
+                            <option value="4000 Legato Road, Suite 1100, Fairfax, VA 22033">Fairfax</option>
+                            <option value="343 Fountains Parkway, Suite 100, Fairview Heights, IL 62208">Fairview Heights</option>
+                            <option value="900 SE 3rd Ave, Fort Lauderdale, FL, 33316, US">Fort Lauderdale</option>
+                            <option value="514 Pettigru Street, Greenville, SC 29601">Greenville</option>
+                            <option value="11750 Katy Freeway, Suite 1260, Houston, TX 77079">Houston</option>
+                            <option value="333 North Alabama Street, Suite 200, Indianapolis, IN 46204">Indianapolis</option>
+                            <option value="3333 Michelson Dr, Suite 300, Irvine, CA, 92612">Irvine</option>
+                            <option value="Hangar 4, Office 7, 1050 E. Airport Road, Jackson, WY 83001">Jackson Hangar</option>
+                            <option value="12724 Gran Bay Pkwy West, Suite 410, Office 456, Jacksonville, FL 32258">Jacksonville</option>
+                            <option value="931 Wildwood Drive, Jefferson City, MO 65109">Jefferson City</option>
+                            <option value="Knightsbridge Office Park, 33 Sloane Street, Building C, Second Floor, Bryanston, Johannesburg, 2191, South Africa">Johannesburg</option>
+                            <option value="12200 N. Ambassador Drive, Suite 610, Kansas City, MO 64163">Kansas City</option>
+                            <option value="7050 Howard Cody Dr. Kiln, MS 39556">Kiln</option>
+                            <option value="Aachener STR, 619, Koeln, 50933, Germany">Koeln</option>
+                            <option value="C-17-03A Kompleks Danau Kota, Taman Zeta @ Zetapark. 67, Jalan Taman Ibu Kota Setapak, Kuala Lumpur, 53300, Malaysia">Kuala Lumpur</option>
+                            <option value="611 S. Eight Street, LaPorte, TX 77571">La Porte</option>
+                            <option value="20 Chiswell Street, London, EC1Y 4TW">London</option>
+                            <option value="3780 Kilroy Airport Way, Suite 200, Long Beach, CA, 90806">Long Beach</option>
+                            <option value="Unit 16a, Deanway Trading Estate, Wilmslow Road, Handforth, SK9 3HW, United Kingdom">Manchester</option>
+                            <option value="Suite 203, 271 Bridge Road, Richmond, Victoria 3121, Australia">Melbourne</option>
+                            <option value="6100 Waterford District Drive, Suite 440, Miami, FL, 33126">Miami</option>
+                            <option value="4711 South LeJeune Road, Coral Gables, FL, 33146, US">Miami (Coral Gables)</option>
+                            <option value="25 W 36th Street, 12th Floor, New York, NY, 10018">New York</option>
+                            <option value="Level 1/6 Ossian Street, Ahuriri, Napier 4110, New Zealand">New Zealand</option>
+                            <option value="100 NE 5th Street, Oklahoma City, OK 73104">Oklahoma City</option>
+                            <option value="3165 McCrory Place, Suite 115, Orlando, FL 32803">Orlando (Winter Park)</option>
+                            <option value="3165 McCrory Place, Suite 115, Orlando, FL 32803">Orlando (Downtown)</option>
+                            <option value="25 West Cedar Street, Suite 640, Pensacola, FL 35202">Pensacola</option>
+                            <option value="Level 3, 1002 Hay Street, Perth, WA 6000, Australia">Perth</option>
+                            <option value="1601 Marys Avenue, Suite 2G10, Sharpsburg, PA 15215">Pittsburgh</option>
+                            <option value="7250 Dallas Parkway, Suite 400 Plano, TX 75024">Plano</option>
+                            <option value="2501 SE Mile Hill Drive, Suite 221, Port Orchard, WA 98366">Port Orchard</option>
+                            <option value="405 South Main Street, Suite 950, Salt Lake City, UT 84111">Salt Lake City</option>
+                            <option value="4630 N Loop 1604 West, Suite 307, San Antonio, TX 78249">San Antonio</option>
+                            <option value="637 Lindaro Street, Suite 100, San Rafael, CA 94901">San Rafael</option>
+                            <option value="38C Jalan Pemimpin, #06-04 A/B, Robert Bosch Building, Singapore 577180">Singapore</option>
+                            <option value="1730 N. Limestone Street, Suite A, Springfield, OH 45503">Springfield</option>
+                            <option value="35 South 400 West, Suite 200, St. George, UT 84770">St. George</option>
+                            <option value="4625 Lindell Boulevard, Second Floor, St. Louis, MO 63108">St. Louis</option>
+                            <option value="450 8th Avenue SE, St. Petersburg, FL 33701">St. Petersburg</option>
+                            <option value="Level 22, 68 Pitt Street, Sydney, NSW 2000 Australia">Sydney (Pitt St)</option>
+                            <option value="Suite 3, Level 23, 6 O'Connell Street, Sydney, NSW 2000, Australia">Sydney City</option>
+                            <option value="Suite 4, 33 Waterloo Road, Macquarie Park, NSW 2113, Australia">Sydney Survey</option>
+                            <option value="1715 Indian Wood Circle, Suite 200, Maumee, OH 43537">Toledo</option>
+                            <option value="9, Millfield House, Croxley Park, Woodshots Mdw, Watford, WD18 8YX, United Kingdom">UK Head Office</option>
+                            <option value="1300 Eastman Avenue, Suite 214, Ventura, CA 93003">Ventura</option>
+                            <option value="4433 Corporation Lane, Suite 125, Virginia Beach, VA 23462">Virginia Beach</option>
+                            <option value="617 South Knik Goose Bay Road, Suite C, Wasilla, AK 99654">Wasilla</option>
+                            <option value="2nd Floor, Office Number 105, Mainzer Str. 97, Wiesbaden, Germany, 65189">Wiesbaden</option>
+                            <option value="Suite 3, 20-22 Beach Street, Wollongong, NSW 2500, Australia">Wollongong</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Include Social Media Links?</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="socialYes" name="socialMedia" value="yes">
+                                <label for="socialYes">Yes</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="socialNo" name="socialMedia" value="no" checked>
+                                <label for="socialNo">No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn" onclick="generateSignature()">Generate Signature</button>
+                    <button type="button" class="btn btn-secondary" onclick="clearForm()">Clear Form</button>
+                </form>
+            </div>
+
+            <div class="preview-section">
+                <h2 class="preview-title">Signature Preview</h2>
+                
+                <div class="signature-preview" id="signaturePreview">
+                    <p style="color: #666; text-align: center; padding: 40px;">
+                        Fill out the form to generate your signature preview
+                    </p>
+                </div>
+
+                <button type="button" class="btn" onclick="selectSignature()" id="selectBtn" style="display: none; background: #28a745; color: white;">
+                    📋 Copy Signature to Clipboard
+                </button>
+
+                <div class="alert" id="copyAlert">
+                    ✅ Signature copied to clipboard! You can now paste it into Outlook.
+                </div>
+                
+                <div class="alert" id="selectAlert" style="background: #fff3cd; color: #856404; border-color: #ffeaa7; display: none;">
+                    ✋ Signature selected! Press Ctrl+C to copy, then paste in Outlook.
+                </div>
+
+                <div class="instructions">
+                    <h3>📧 How to Add to Outlook</h3>
+                    <ol>
+                        <li>Click "📋 Copy Signature to Clipboard" button above</li>
+                        <li>Open Outlook → File → Options → Mail → Signatures</li>
+                        <li>Click "New" to create a signature</li>
+                        <li>Paste (Ctrl+V) in the signature editor</li>
+                        <li>Set as default and click OK</li>
+                    </ol>
+                    
+                    <p><strong>💡 Tip:</strong> The signature will paste as formatted rich text, not HTML code!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-generate signature as user types
+        document.querySelectorAll('input, select').forEach(element => {
+            element.addEventListener('input', generateSignature);
+            element.addEventListener('change', generateSignature);
+        });
+
+        function generateSignature() {
+            const formData = getFormData();
+            const signatureHTML = createSignatureHTML(formData);
+            document.getElementById('signaturePreview').innerHTML = signatureHTML;
+            
+            // Show copy button if signature is generated
+            const selectBtn = document.getElementById('selectBtn');
+            if (formData.name && formData.title && formData.directphone && formData.email && formData.office) {
+                selectBtn.style.display = 'block';
+            } else {
+                selectBtn.style.display = 'none';
+            }
+        }
+
+        function getFormData() {
+            return {
+                name: document.getElementById('name').value.trim(),
+                certification: document.getElementById('certification').value.trim(),
+                level: document.getElementById('level').value.trim(),
+                title: document.getElementById('title').value.trim(),
+                group: document.getElementById('group').value.trim(),
+                directphone: document.getElementById('directphone').value.trim(),
+                cellphone: document.getElementById('cellphone').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                office: document.getElementById('office').value,
+                socialMedia: document.querySelector('input[name="socialMedia"]:checked').value
+            };
+        }
+
+        function createSignatureHTML(data) {
+            if (!data.name && !data.title && !data.directphone && !data.email) {
+                return '<p style="color: #666; text-align: center; padding: 40px;">Fill out the form to generate your signature preview</p>';
+            }
+
+            let nameWithCert = data.name;
+            if (data.certification) {
+                nameWithCert += ', ' + data.certification;
+            }
+
+            let titleGroup = '';
+            if (data.title && data.group) {
+                titleGroup = data.title + ', ' + data.group;
+            } else if (data.title) {
+                titleGroup = data.title;
+            } else if (data.group) {
+                titleGroup = data.group;
+            }
+
+            let phoneInfo = '';
+            if (data.directphone) {
+                phoneInfo += 'D: ' + data.directphone;
+            }
+            if (data.cellphone) {
+                if (phoneInfo) phoneInfo += ' ';
+                phoneInfo += 'C: ' + data.cellphone;
+            }
+
+            let socialLinks = '';
+            if (data.socialMedia === 'yes') {
+                socialLinks = `
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/WoolpertInc">Facebook</a>
+                        <a href="https://www.linkedin.com/company/woolpert">LinkedIn</a>
+                    </div>
+                `;
+            }
+
+            return `
+                <table class="signature-table" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                        <td class="logo-cell">
+                            <a href="https://woolpert.com">
+                                <img src="https://bermelloajamil.com/wp-content/uploads/2025/07/logo-woolpert.png" alt="Woolpert Logo">
+                            </a>
+                        </td>
+                        <td class="info-cell">
+                            <div class="name">${nameWithCert}</div>
+                            ${data.level ? '<div class="level">' + data.level + '</div>' : ''}
+                            ${titleGroup ? '<div class="title-group">' + titleGroup + '</div>' : ''}
+                            ${phoneInfo ? '<div class="contact-info" style="margin-top: 10px;">' + phoneInfo + '</div>' : ''}
+                            ${data.email ? '<div class="contact-info">' + data.email + '</div>' : ''}
+                            <div class="company-name">Woolpert</div>
+                            ${data.office ? '<div class="contact-info">' + data.office + '</div>' : ''}
+                            <div class="website">
+                                <a href="https://www.woolpert.com">woolpert.com</a>
+                            </div>
+                            ${socialLinks}
+                        </td>
+                    </tr>
+                </table>
+            `;
+        }
+
+
+
+        function selectSignature() {
+            const signatureElement = document.getElementById('signaturePreview');
+            
+            try {
+                // Select the signature content
+                const range = document.createRange();
+                range.selectNodeContents(signatureElement);
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                
+                // Copy using the reliable execCommand method
+                const successful = document.execCommand('copy');
+                
+                // Clear selection
+                selection.removeAllRanges();
+                
+                if (successful) {
+                    showCopyAlert();
+                } else {
+                    throw new Error('Copy command failed');
+                }
+            } catch (err) {
+                console.error('Manual copy failed: ', err);
+                // If copy fails, show instructions for manual copy
+                const selectAlert = document.getElementById('selectAlert');
+                selectAlert.style.display = 'block';
+                
+                // Re-select the signature for manual copying
+                const range = document.createRange();
+                range.selectNodeContents(signatureElement);
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                
+                setTimeout(() => {
+                    selectAlert.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        function showCopyAlert() {
+            const alert = document.getElementById('copyAlert');
+            alert.style.display = 'block';
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 3000);
+        }
+
+        function clearForm() {
+            document.getElementById('signatureForm').reset();
+            document.getElementById('signaturePreview').innerHTML = 
+                '<p style="color: #666; text-align: center; padding: 40px;">Fill out the form to generate your signature preview</p>';
+            document.getElementById('selectBtn').style.display = 'none';
+        }
+
+        // Initialize with default "No" for social media
+        document.getElementById('socialNo').checked = true;
+    </script>
+</body>
+</html> 
