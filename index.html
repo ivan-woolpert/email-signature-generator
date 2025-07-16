@@ -214,12 +214,7 @@
             margin-bottom: 5px;
         }
 
-        .level {
-            font-family: 'Calibri', Arial, sans-serif;
-            font-size: 15px;
-            color: #666;
-            margin-bottom: 3px;
-        }
+
 
         .title-group {
             font-family: 'Calibri', Arial, sans-serif;
@@ -352,18 +347,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="level">Shareholder Level</label>
-                        <input type="text" id="level" name="level" placeholder="Associate">
-                    </div>
-
-                    <div class="form-group">
                         <label for="title">Job Title *</label>
                         <input type="text" id="title" name="title" placeholder="Graphic Design Lead" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="group">Group/Practice</label>
-                        <input type="text" id="group" name="group" placeholder="Marketing">
                     </div>
 
                     <div class="form-group">
@@ -543,9 +528,7 @@
             return {
                 name: document.getElementById('name').value.trim(),
                 certification: document.getElementById('certification').value.trim(),
-                level: document.getElementById('level').value.trim(),
                 title: document.getElementById('title').value.trim(),
-                group: document.getElementById('group').value.trim(),
                 directphone: document.getElementById('directphone').value.trim(),
                 cellphone: document.getElementById('cellphone').value.trim(),
                 email: document.getElementById('email').value.trim(),
@@ -564,23 +547,10 @@
                 nameWithCert += ', ' + data.certification;
             }
 
-            let titleGroup = '';
-            if (data.title && data.group) {
-                titleGroup = data.title + ', ' + data.group;
-            } else if (data.title) {
-                titleGroup = data.title;
-            } else if (data.group) {
-                titleGroup = data.group;
-            }
+            let titleDisplay = data.title || '';
 
-            let phoneInfo = '';
-            if (data.directphone) {
-                phoneInfo += 'D: ' + data.directphone;
-            }
-            if (data.cellphone) {
-                if (phoneInfo) phoneInfo += ' ';
-                phoneInfo += 'C: ' + data.cellphone;
-            }
+            let directPhoneDisplay = data.directphone ? 'D: ' + data.directphone : '';
+            let mobilePhoneDisplay = data.cellphone ? 'M: ' + data.cellphone : '';
 
             let socialLinks = '';
             if (data.socialMedia === 'yes') {
@@ -602,9 +572,9 @@
                         </td>
                         <td class="info-cell">
                             <div class="name">${nameWithCert}</div>
-                            ${data.level ? '<div class="level">' + data.level + '</div>' : ''}
-                            ${titleGroup ? '<div class="title-group">' + titleGroup + '</div>' : ''}
-                            ${phoneInfo ? '<div class="contact-info" style="margin-top: 10px;">' + phoneInfo + '</div>' : ''}
+                            ${titleDisplay ? '<div class="title-group">' + titleDisplay + '</div>' : ''}
+                            ${directPhoneDisplay ? '<div class="contact-info" style="margin-top: 10px;">' + directPhoneDisplay + '</div>' : ''}
+                            ${mobilePhoneDisplay ? '<div class="contact-info">' + mobilePhoneDisplay + '</div>' : ''}
                             ${data.email ? '<div class="contact-info">' + data.email + '</div>' : ''}
                             
                             ${data.office ? '<div class="contact-info">' + data.office + '</div>' : ''}
