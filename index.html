@@ -178,7 +178,9 @@
         }
 
         .logo-cell a {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 100%;
             height: 100%;
             padding: 8px;
@@ -187,8 +189,10 @@
 
         .logo-cell img {
             width: 100%;
-            height: 100%;
+            height: auto;
+            max-height: 100%;
             object-fit: contain;
+            object-position: center;
             display: block;
         }
 
@@ -350,32 +354,32 @@
 
                     <div class="form-group">
                         <label for="name">Full Name *</label>
-                        <input type="text" id="name" name="name" placeholder="John Shanks" required>
+                        <input type="text" id="name" name="name" placeholder="John Doe" required>
                     </div>
 
                     <div class="form-group">
                         <label for="certification">Certifications</label>
-                        <input type="text" id="certification" name="certification" placeholder="LEED AP">
+                        <input type="text" id="certification" name="certification" placeholder="LEED AP, PMP">
                     </div>
 
                     <div class="form-group">
                         <label for="title">Job Title *</label>
-                        <input type="text" id="title" name="title" placeholder="Graphic Design Lead" required>
+                        <input type="text" id="title" name="title" placeholder="Senior Project Manager" required>
                     </div>
 
                     <div class="form-group">
                         <label for="directphone">Direct Phone *</label>
-                        <input type="tel" id="directphone" name="directphone" placeholder="+19375311557" required>
+                        <input type="tel" id="directphone" name="directphone" placeholder="+1 937 531 1557" required>
                     </div>
 
                     <div class="form-group">
                         <label for="cellphone">Mobile Phone</label>
-                        <input type="tel" id="cellphone" name="cellphone" placeholder="+19377284260">
+                        <input type="tel" id="cellphone" name="cellphone" placeholder="+1 937 728 4260">
                     </div>
 
                     <div class="form-group">
                         <label for="email">Email Address *</label>
-                        <input type="email" id="email" name="email" placeholder="john.shanks@woolpert.com" required>
+                        <input type="email" id="email" name="email" placeholder="john.doe@woolpert.com" required>
                     </div>
 
                     <div class="form-group">
