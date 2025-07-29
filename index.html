@@ -368,6 +368,11 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="department">Department</label>
+                        <input type="text" id="department" name="department" placeholder="Maritime Solutions">
+                    </div>
+
+                    <div class="form-group">
                         <label for="directphone">Direct Phone *</label>
                         <input type="tel" id="directphone" name="directphone" placeholder="+1 937 531 1557" required>
                     </div>
@@ -567,6 +572,7 @@
                 name: document.getElementById('name').value.trim(),
                 certification: document.getElementById('certification').value.trim(),
                 title: document.getElementById('title').value.trim(),
+                department: document.getElementById('department').value.trim(),
                 directphone: document.getElementById('directphone').value.trim(),
                 cellphone: document.getElementById('cellphone').value.trim(),
                 email: document.getElementById('email').value.trim(),
@@ -605,6 +611,7 @@
             }
 
             let titleDisplay = data.title || '';
+            let departmentDisplay = data.department || '';
 
             let directPhoneDisplay = data.directphone ? 'D: ' + data.directphone : '';
             let mobilePhoneDisplay = data.cellphone ? 'M: ' + data.cellphone : '';
@@ -652,6 +659,7 @@
                         <td class="info-cell">
                             <div class="name">${nameWithCert}</div>
                             ${titleDisplay ? '<div class="title-group">' + titleDisplay + '</div>' : ''}
+                            ${departmentDisplay ? '<div class="title-group">' + departmentDisplay + '</div>' : ''}
                             ${directPhoneDisplay ? '<div class="contact-info" style="margin-top: 6px;">' + directPhoneDisplay + '</div>' : ''}
                             ${mobilePhoneDisplay ? '<div class="contact-info">' + mobilePhoneDisplay + '</div>' : ''}
                             ${data.email ? '<div class="contact-info">' + data.email + '</div>' : ''}
