@@ -349,6 +349,7 @@
                             <option value="woolpert">Woolpert</option>
                             <option value="bermello">Bermello Ajamil a Woolpert Company</option>
                             <option value="greenbox">Greenbox</option>
+                            <option value="dawood">Dawood</option>
                         </select>
                     </div>
 
@@ -603,6 +604,11 @@
                 companyUrl = 'https://greenbox.com';
                 companyWebsite = 'greenbox.com';
                 companyName = 'Greenbox';
+            } else if (data.company === 'dawood') {
+                logoUrl = 'https://bermelloajamil.com/wp-content/uploads/2025/07/Screenshot-2025-07-30-120159.png';
+                companyUrl = 'https://dawood.com';
+                companyWebsite = 'dawood.com';
+                companyName = 'Dawood';
             }
 
             let nameWithCert = data.name;
@@ -631,6 +637,10 @@
                     'greenbox': {
                         linkedin: 'https://www.linkedin.com/company/greenboxarchitecture/?originalSubdomain=au',
                         instagram: 'https://www.instagram.com/greenboxarchitecture/?hl=en'
+                    },
+                    'dawood': {
+                        linkedin: 'https://www.linkedin.com/company/dawood/',
+                        instagram: 'https://www.instagram.com/dawood/'
                     }
                 };
 
